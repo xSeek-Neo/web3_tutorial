@@ -14,10 +14,10 @@ module.exports = {
             chainId: 31337,
         },
         sepolia: {
-            // url:  Alchemy, Infura, Quicknode.
             url: process.env.SEPOLIA_RPC_URL,
             accounts: [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2],
             chainId: 11155111,
+            gasPrice: 100e9, // 100 gwei 下限；实际发交易时用 getGasOverrides 动态加价 30%，避免 REPLACEMENT_UNDERPRICED
         },
     },
     sourcify: {
@@ -34,6 +34,11 @@ module.exports = {
         secondAccount: {
             default: 1,
         },
+    },
+    gasReporter: {
+        enabled: process.env.REPORT_GAS === 'true',
+        currency: 'USD',
+        gasPrice: 100,
     },
 }
 

@@ -1,5 +1,6 @@
 import {
     devlopmentChains,
+    getGasOverrides,
     networkConfig,
     CONFIRMATIONS,
     DECIMAL,
@@ -9,7 +10,7 @@ import {
 
 // npx hardhat deploy --network hardhat  会执行deployFundMe函数
 async function deployFundMe(hre) {
-    const { deployments, getNamedAccounts, network } = hre
+    const { deployments, getNamedAccounts, network, ethers } = hre
     const { firstAccount } = await getNamedAccounts()
     const { deploy, get } = deployments
 
@@ -37,12 +38,19 @@ async function deployFundMe(hre) {
         confirmations = CONFIRMATIONS
     }
 
-    const fundMeDeployment = await deploy('FundMe', {
+    const deployOptions = {
         from: firstAccount,
         args: [LOCK_TIME, dataFeedAddr],
         log: true,
         waitConfirmations: confirmations,
-    })
+    }
+    if (!devlopmentChains.includes(network.name) && ethers?.provider) {
+        const gas = await getGasOverrides(ethers.provider, network.config)
+        if (gas.gasPrice) deployOptions.gasPrice = gas.gasPrice
+    } else if (network.config.gasPrice) {
+        deployOptions.gasPrice = network.config.gasPrice
+    }
+    const fundMeDeployment = await deploy('FundMe', deployOptions)
 
     // remove deployments directory or add --reset flag if you redeploy contract
     if (hre.network.config.chainId == 11155111 && process.env.ETHERSCAN_API_KEY) {
