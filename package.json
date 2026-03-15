@@ -11,9 +11,9 @@
         "compile": "npx hardhat compile",
         "deploy": "npx hardhat run scripts/deployFundMe.js --network hardhat",
         "deploy:sepolia": "npx hardhat run scripts/deployFundMe.js --network sepolia",
-        "lint": "oxlint .",
-        "format": "oxfmt .",
-        "format:check": "oxfmt . --check",
+        "oxlint": "oxlint .",
+        "oxfmt": "oxfmt .",
+        "oxfmt:check": "oxfmt . --check",
         "prepare": "husky"
     },
     "dependencies": {
