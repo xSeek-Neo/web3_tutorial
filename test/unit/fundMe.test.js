@@ -33,7 +33,6 @@ import { LOCK_TIME, devlopmentChains } from '../../helper-hardhat-config.js'
         assert.equal(await fundMe.dataFeed(), expectedDataFeed)
     })
 
-
     // fund, getFund, refund
     // unit test for fund
     // window open, value greater then minimum value, funder balance
@@ -43,21 +42,16 @@ import { LOCK_TIME, devlopmentChains } from '../../helper-hardhat-config.js'
         await expect(fundMe.fund({ value: ethers.parseEther('0.1') })).to.be.revertedWith('window is closed')
     })
 
-    it("window open, value is less than minimum, fund failed",
-        async function () {
-            await expect(fundMe.fund({ value: ethers.parseEther("0.01") }))
-                .to.be.revertedWith("Send more ETH")
-        }
-    )
+    it('window open, value is less than minimum, fund failed', async function () {
+        await expect(fundMe.fund({ value: ethers.parseEther('0.01') })).to.be.revertedWith('Send more ETH')
+    })
 
-    it("Window open, value is greater minimum, fund success",
-        async function () {
-            // greater than minimum
-            await fundMe.fund({ value: ethers.parseEther("0.1") })
-            const balance = await fundMe.fundersToAmount(firstAccount)
-            await expect(balance).to.equal(ethers.parseEther("0.1"))
-        }
-    )
+    it('Window open, value is greater minimum, fund success', async function () {
+        // greater than minimum
+        await fundMe.fund({ value: ethers.parseEther('0.1') })
+        const balance = await fundMe.fundersToAmount(firstAccount)
+        await expect(balance).to.equal(ethers.parseEther('0.1'))
+    })
 
     // unit test for getFund
     // onlyOwner, windowClose, target reached
@@ -65,18 +59,13 @@ import { LOCK_TIME, devlopmentChains } from '../../helper-hardhat-config.js'
         await fundMe.fund({ value: ethers.parseEther('1') })
         const { time } = await import('@nomicfoundation/hardhat-network-helpers')
         await time.increase(LOCK_TIME + 1)
-        await expect(fundMeSecondAccount.getFund()).to.be.revertedWith(
-            'This function is only be called by the owner',
-        )
+        await expect(fundMeSecondAccount.getFund()).to.be.revertedWith('This function is only be called by the owner')
     })
 
-    it("window open, target reached, getFund failed",
-        async function () {
-            await fundMe.fund({ value: ethers.parseEther("1") })
-            await expect(fundMe.getFund())
-                .to.be.revertedWith("window is not closed")
-        }
-    )
+    it('window open, target reached, getFund failed', async function () {
+        await fundMe.fund({ value: ethers.parseEther('1') })
+        await expect(fundMe.getFund()).to.be.revertedWith('window is not closed')
+    })
 
     it('window closed, target not reached, getFund failed', async function () {
         await fundMe.fund({ value: ethers.parseEther('0.1') })
@@ -95,13 +84,10 @@ import { LOCK_TIME, devlopmentChains } from '../../helper-hardhat-config.js'
 
     // refund
     // windowClosed, target not reached, funder has balance
-    it("window open, target not reached, funder has balance",
-        async function () {
-            await fundMe.fund({ value: ethers.parseEther("0.1") })
-            await expect(fundMe.refund())
-                .to.be.revertedWith("window is not closed");
-        }
-    )
+    it('window open, target not reached, funder has balance', async function () {
+        await fundMe.fund({ value: ethers.parseEther('0.1') })
+        await expect(fundMe.refund()).to.be.revertedWith('window is not closed')
+    })
 
     it('window closed, target reach, funder has balance', async function () {
         await fundMe.fund({ value: ethers.parseEther('1') })
