@@ -16,7 +16,7 @@ async function deployFundMe(hre) {
     console.log('firstAccount is:', firstAccount)
 
     let dataFeedAddr
-    let _confirmations
+    let confirmations
     if (devlopmentChains.includes(network.name)) {
         let mockV3Aggregator
         try {
@@ -26,26 +26,28 @@ async function deployFundMe(hre) {
                 from: firstAccount,
                 args: [DECIMAL, INITIAL_ANSWER],
                 log: true,
+                waitConfirmations: CONFIRMATIONS,
             })
             mockV3Aggregator = await get('MockV3Aggregator')
         }
         dataFeedAddr = mockV3Aggregator.address
-        _confirmations = 0
+        confirmations = 0
     } else {
         dataFeedAddr = networkConfig[network.config.chainId].ethUsdDataFeed
-        _confirmations = CONFIRMATIONS
+        confirmations = CONFIRMATIONS
     }
 
-    await deploy('FundMe', {
+    const fundMeDeployment = await deploy('FundMe', {
         from: firstAccount,
         args: [LOCK_TIME, dataFeedAddr],
         log: true,
+        waitConfirmations: confirmations,
     })
 
     // remove deployments directory or add --reset flag if you redeploy contract
     if (hre.network.config.chainId == 11155111 && process.env.ETHERSCAN_API_KEY) {
         await hre.run('verify:verify', {
-            address: fundMe.address,
+            address: fundMeDeployment.address,
             constructorArguments: [LOCK_TIME, dataFeedAddr],
         })
     } else {
