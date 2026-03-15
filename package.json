@@ -12,7 +12,9 @@
         "deploy": "npx hardhat run scripts/deployFundMe.js --network hardhat",
         "deploy:sepolia": "npx hardhat run scripts/deployFundMe.js --network sepolia",
         "lint": "oxlint .",
-        "format": "oxfmt ."
+        "format": "oxfmt .",
+        "format:check": "oxfmt . --check",
+        "prepare": "husky"
     },
     "dependencies": {
         "hardhat-deploy": "^1.0.4"
@@ -33,6 +35,7 @@
         "ethers": "^6.16.0",
         "hardhat": "^2.25.1",
         "hardhat-gas-reporter": "^2.3.0",
+        "husky": "^9.1.7",
         "oxfmt": "^0.40.0",
         "oxlint": "^0.15.0",
         "solidity-coverage": "^0.8.17",

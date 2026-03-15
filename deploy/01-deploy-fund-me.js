@@ -16,7 +16,7 @@ async function deployFundMe(hre) {
     console.log('firstAccount is:', firstAccount)
 
     let dataFeedAddr
-    let confirmations
+    let _confirmations
     if (devlopmentChains.includes(network.name)) {
         let mockV3Aggregator
         try {
@@ -30,10 +30,10 @@ async function deployFundMe(hre) {
             mockV3Aggregator = await get('MockV3Aggregator')
         }
         dataFeedAddr = mockV3Aggregator.address
-        confirmations = 0
+        _confirmations = 0
     } else {
         dataFeedAddr = networkConfig[network.config.chainId].ethUsdDataFeed
-        confirmations = CONFIRMATIONS
+        _confirmations = CONFIRMATIONS
     }
 
     await deploy('FundMe', {
