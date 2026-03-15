@@ -20,16 +20,16 @@ npx hardhat compile
 
 ### 本地网络（Hardhat）
 
-| 命令 | 说明 |
-|------|------|
-| `npx hardhat deploy` | 在本地 Hardhat 网络执行部署。有部署记录时只部署尚未部署的合约（`01-deploy-fund-me.js` 中：会执行 deployFundMe 函数）。 |
+| 命令                         | 说明                                                                                                                                                        |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npx hardhat deploy`         | 在本地 Hardhat 网络执行部署。有部署记录时只部署尚未部署的合约（`01-deploy-fund-me.js` 中：会执行 deployFundMe 函数）。                                      |
 | `npx hardhat deploy --reset` | 先清空当前网络的部署记录，再按顺序重新执行全部部署（Mock → FundMe），合约地址会全部更新。**需要重新部署合约时**：可删除 `deployments/` 目录或加 `--reset`。 |
 
 ### Sepolia 测试网
 
-| 命令 | 说明 |
-|------|------|
-| `npx hardhat deploy --network sepolia` | 在 Sepolia 上部署，沿用已有部署记录。 |
+| 命令                                           | 说明                                                                                      |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `npx hardhat deploy --network sepolia`         | 在 Sepolia 上部署，沿用已有部署记录。                                                     |
 | `npx hardhat deploy --network sepolia --reset` | 清空 Sepolia 的部署记录后重新部署全部合约，并等待 5 个区块确认后再向 Etherscan 提交验证。 |
 
 **环境变量**（`.env`）：`SEPOLIA_RPC_URL`、`PRIVATE_KEY_1`（可选 `PRIVATE_KEY_2`）；需要自动验证时配置 `ETHERSCAN_API_KEY`。Sepolia 的 RPC 可使用 Alchemy、Infura、QuickNode 等。
